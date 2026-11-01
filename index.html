@@ -22,7 +22,7 @@
   --brand: #2433D6; --deep: #1A249E; --tint: #E5E8FC;
   --hot: #FF5A3C; --hotink: #C73A1E;
   --spring: cubic-bezier(.2, .9, .25, 1.15);
-  --base: 380ms; /* content waits for the splash to open */
+  --base: 200ms; /* content waits for the splash to open */
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
@@ -44,12 +44,12 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 
 /* Entrances. Each slide has one orchestrated moment; these are its vocabulary. */
 .a { opacity: 0; }
-.active .a { animation-duration: .8s; animation-fill-mode: both; animation-timing-function: var(--spring); animation-delay: calc(var(--base) + var(--d, 0ms)); }
+.active .a { animation-duration: .6s; animation-fill-mode: both; animation-timing-function: var(--spring); animation-delay: calc(var(--base) + var(--d, 0ms)); }
 .active .a.pop { animation-name: pop; }
 .active .a.drop { animation-name: drop; }
-.active .a.slam { animation-name: slam; animation-duration: .7s; }
+.active .a.slam { animation-name: slam; animation-duration: .55s; }
 .active .a.wipe { animation-name: wipe; animation-timing-function: cubic-bezier(.7,0,.2,1); }
-.active .a.flip { animation-name: flip; animation-duration: 1s; }
+.active .a.flip { animation-name: flip; animation-duration: .7s; }
 .active .a.lift { animation-name: lift; }
 .active .a.fade { animation-name: fade; animation-timing-function: ease; }
 @keyframes pop { 0% { opacity: 0; transform: scale(.5); } 60% { opacity: 1; transform: scale(1.06); } 100% { opacity: 1; transform: none; } }
@@ -63,9 +63,9 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 /* Letters and words that arrive one at a time. */
 [data-split] .w, [data-words] .wd { display: inline-block; white-space: nowrap; }
 [data-split] .ch { display: inline-block; opacity: 0; }
-.active [data-split] .ch { animation: drop .9s var(--spring) both; animation-delay: calc(var(--base) + var(--d, 0ms) + var(--i) * 55ms); }
+.active [data-split] .ch { animation: drop .9s var(--spring) both; animation-delay: calc(var(--base) + var(--d, 0ms) + var(--i) * 40ms); }
 [data-words] .wd { opacity: 0; }
-.active [data-words] .wd { animation: pop .6s var(--spring) both; animation-delay: calc(var(--base) + var(--d, 0ms) + var(--i) * var(--step, 120ms)); }
+.active [data-words] .wd { animation: pop .6s var(--spring) both; animation-delay: calc(var(--base) + var(--d, 0ms) + var(--i) * var(--step, 90ms)); }
 
 /* ── Quibbit ─────────────────────────────────────────────── */
 .frog { display: block; width: 100%; height: 100%; overflow: visible; }
@@ -144,18 +144,6 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 #s-title .phone { --w: 340px; position: relative; animation: float 6s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(-14px); } } /* translate only, so the live screen stays sharp */
 
-/* ── 2 · The silence ────────────────────────────────────── */
-#s-silence { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-#s-silence .q { font-size: 132px; }
-#s-silence .bubble { margin: 50px 0 40px; width: 360px; height: 220px; }
-#s-silence .bubble path { fill: none; stroke: #fff; stroke-width: 6; stroke-linejoin: round; stroke-dasharray: 1400; stroke-dashoffset: 1400; }
-#s-silence.active .bubble path { animation: draw 1.4s cubic-bezier(.6,0,.3,1) forwards; animation-delay: calc(var(--base) + 1300ms); }
-#s-silence .bubble circle { fill: #fff; opacity: 0; }
-#s-silence.active .bubble circle { animation: hush 4.4s ease-in-out forwards; animation-delay: calc(var(--base) + 2500ms + var(--i) * 180ms); }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes hush { 0% { opacity: 0; } 10%, 22%, 34% { opacity: 1; } 16%, 28% { opacity: .25; } 60% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
-#s-silence .cap { font-size: 34px; color: rgba(255,255,255,.72); }
-
 /* ── 3 · Problem ────────────────────────────────────────── */
 #s-problem .grid { position: absolute; left: 96px; right: 96px; top: 300px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 44px; }
 .waffle { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; width: 250px; }
@@ -165,36 +153,71 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 .stat p { margin-top: 10px; font-size: 21px; line-height: 1.38; color: var(--soft); max-width: 300px; }
 .stat p b { color: var(--ink); font-weight: 800; }
 
-/* ── 4 · Insight ────────────────────────────────────────── */
-#s-insight .mark { position: absolute; left: 70px; top: 10px; font-family: 'Fredoka'; font-weight: 700; font-size: 340px; line-height: 1; color: rgba(255,255,255,.16); }
-#s-insight .quote { position: absolute; left: 96px; top: 150px; width: 1260px; font-family: 'Fredoka'; font-weight: 600; font-size: 66px; line-height: 1.16; min-height: 230px; }
+/* ── 3 · Insight, and the science behind it ────────────── */
+#s-insight .mark { position: absolute; left: 70px; top: 0; font-family: 'Fredoka'; font-weight: 700; font-size: 300px; line-height: 1; color: rgba(255,255,255,.16); }
+#s-insight .quote { position: absolute; left: 96px; top: 100px; width: 1200px; min-height: 210px; font-family: 'Fredoka'; font-weight: 600; font-size: 58px; line-height: 1.15; }
 .caret { display: inline-block; width: 5px; height: .9em; margin-left: 6px; vertical-align: -.08em; background: currentColor; animation: caret 1s steps(1) infinite; }
 @keyframes caret { 50% { opacity: 0; } }
-#s-insight .notes { position: absolute; left: 96px; top: 470px; width: 1000px; display: grid; gap: 18px; font-size: 30px; line-height: 1.4; color: rgba(255,255,255,.86); }
-#s-insight .punch { position: absolute; left: 96px; top: 690px; width: 1100px; font-size: 48px; line-height: 1.12; }
+#s-insight .note { position: absolute; left: 96px; top: 335px; width: 1150px; font-size: 27px; line-height: 1.42; color: rgba(255,255,255,.86); }
+#s-insight .punch { position: absolute; left: 96px; top: 470px; width: 1180px; font-size: 44px; line-height: 1.12; }
+#s-insight .proof { position: absolute; left: 96px; right: 96px; top: 640px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding-top: 26px; border-top: 2px solid rgba(255,255,255,.25); }
+#s-insight .proof b { display: block; font-family: 'Fredoka'; font-weight: 700; font-size: 46px; line-height: 1; }
+#s-insight .proof span { display: block; margin-top: 8px; font-size: 19px; line-height: 1.4; color: rgba(255,255,255,.82); }
 
-/* ── 5 · Meet ───────────────────────────────────────────── */
-#s-meet .copy { position: absolute; left: 740px; top: 120px; width: 780px; }
-#s-meet .h2 { font-size: 68px; }
-#s-meet .lede { margin-top: 24px; }
-#s-meet .does { margin-top: 40px; display: grid; gap: 22px; }
-#s-meet .does div { display: grid; grid-template-columns: 54px 1fr; gap: 18px; align-items: start; }
-#s-meet .does svg { width: 54px; height: 54px; }
-#s-meet .does b { display: block; font-family: 'Fredoka'; font-weight: 600; font-size: 30px; }
-#s-meet .does span { font-size: 21px; line-height: 1.4; color: var(--soft); }
+/* ── 7 · Market ─────────────────────────────────────────── */
+#s-market .h2 { position: absolute; left: 96px; top: 66px; font-size: 54px; }
+#s-market .tiles { position: absolute; left: 96px; right: 96px; top: 165px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+#s-market .tile { background: #fff; border: 2px solid var(--line); border-radius: 24px; padding: 18px 22px; }
+#s-market .tile h3 { font-family: 'Fredoka'; font-weight: 600; font-size: 22px; }
+#s-market .tile .big { margin-top: 4px; font-family: 'Fredoka'; font-weight: 700; font-size: 46px; line-height: 1.05; color: var(--brand); font-variant-numeric: tabular-nums; }
+#s-market .tile p { margin-top: 4px; font-size: 16px; line-height: 1.35; color: var(--soft); }
+#s-market .circles { position: absolute; left: 110px; top: 390px; width: 430px; height: 430px; }
+#s-market .circles div { position: absolute; left: 50%; bottom: 0; border-radius: 50%; transform: translateX(-50%) scale(0); transform-origin: 50% 100%; transition: transform .7s var(--spring); display: flex; justify-content: center; padding-top: 24px; font-family: 'Fredoka'; font-weight: 600; font-size: 24px; }
+#s-market .circles .tam { width: 430px; height: 430px; background: var(--tint); color: var(--brand); }
+#s-market .circles .sam { width: 280px; height: 280px; background: rgba(36, 51, 214, .28); color: var(--deep); }
+#s-market .circles .som { width: 136px; height: 136px; background: var(--brand); color: #fff; padding-top: 0; align-items: center; }
+#s-market .circles div.on { transform: translateX(-50%) scale(1); }
+#s-market .rows { position: absolute; left: 640px; top: 400px; width: 870px; display: grid; gap: 22px; }
+#s-market .rows > div { display: grid; grid-template-columns: 230px 1fr; gap: 24px; align-items: baseline; opacity: .25; transition: opacity .4s; }
+#s-market .rows > div.on { opacity: 1; }
+#s-market .rows b { font-family: 'Fredoka'; font-weight: 700; font-size: 52px; line-height: 1; color: var(--brand); font-variant-numeric: tabular-nums; }
+#s-market .rows h3 { font-family: 'Fredoka'; font-weight: 600; font-size: 23px; }
+#s-market .rows p { margin-top: 2px; font-size: 18px; line-height: 1.38; color: var(--soft); }
+
+/* ── 8 · Model and where we are ─────────────────────────── */
+#s-model .h2 { position: absolute; left: 96px; top: 70px; }
+#s-model h3.k { font-family: 'Fredoka'; font-weight: 600; font-size: 28px; }
+#s-model .plans { position: absolute; left: 96px; top: 200px; width: 820px; }
+#s-model .plan { display: grid; grid-template-columns: 250px 1fr; gap: 24px; align-items: center; margin-top: 20px; padding: 30px 28px; border-radius: 24px; background: #fff; border: 2px solid var(--line); }
+#s-model .plan.up { background: var(--brand); border-color: var(--brand); color: #fff; }
+#s-model .plan b { display: block; font-family: 'Fredoka'; font-weight: 600; font-size: 26px; }
+#s-model .plan .price { font-family: 'Fredoka'; font-weight: 700; font-size: 40px; line-height: 1.1; }
+#s-model .plan .price small { font-size: 20px; font-weight: 600; opacity: .75; }
+#s-model .plan p { font-size: 20px; line-height: 1.4; }
+#s-model .plan:not(.up) p { color: var(--soft); }
+#s-model .now { position: absolute; left: 980px; top: 200px; width: 524px; }
+#s-model .card { margin-top: 20px; padding: 30px 28px; border-radius: 24px; background: #fff; border: 2px solid var(--line); }
+#s-model .card ul { list-style: none; padding: 0; display: grid; gap: 16px; font-size: 19px; line-height: 1.35; }
+#s-model .card li { display: grid; grid-template-columns: 30px 1fr; gap: 10px; }
+#s-model .card li svg { width: 26px; height: 26px; margin-top: 1px; }
+#s-model .card .tag { margin-top: 18px; padding-top: 16px; border-top: 1.5px solid var(--line); font-family: 'Fredoka'; font-weight: 600; font-size: 22px; }
+#s-model .goals { margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+#s-model .goals b { display: block; font-family: 'Fredoka'; font-weight: 700; font-size: 40px; color: var(--brand); font-variant-numeric: tabular-nums; }
+#s-model .goals span { font-size: 15px; line-height: 1.3; color: var(--soft); }
+#s-model .anchor { position: absolute; left: 96px; bottom: 44px; font-size: 19px; color: var(--soft); }
 
 /* ── 6 · How it works ───────────────────────────────────── */
 #s-how .h2 { position: absolute; left: 96px; top: 70px; }
 #s-how .path { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; pointer-events: none; }
 #s-how .path path { fill: none; stroke: var(--brand); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 2 16; }
 #s-how .path .mask { stroke: var(--paper); stroke-width: 12; stroke-dasharray: 2600; stroke-dashoffset: 0; }
-#s-how.active .path .mask { animation: undraw 2.4s cubic-bezier(.6,0,.3,1) forwards; animation-delay: calc(var(--base) + 600ms); }
+#s-how.active .path .mask { animation: undraw 1.6s cubic-bezier(.6,0,.3,1) forwards; animation-delay: calc(var(--base) + 400ms); }
 @keyframes undraw { to { stroke-dashoffset: -2600; } }
 #s-how .step { position: absolute; top: 170px; width: 400px; }
 #s-how .step .phone { --w: 300px; position: relative; margin: 26px auto 0; }
 #s-how .step h3 { font-family: 'Fredoka'; font-weight: 700; font-size: 36px; }
 #s-how .step h3 i { font-style: normal; display: inline-grid; place-items: center; width: 52px; height: 52px; margin-right: 12px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 28px; vertical-align: 4px; }
-#s-how .step p { margin-top: 6px; min-height: 56px; max-width: 380px; font-size: 20px; line-height: 1.4; color: var(--soft); }
+#s-how .step p { margin-top: 6px; min-height: 84px; max-width: 390px; font-size: 19px; line-height: 1.4; color: var(--soft); }
 
 /* ── 7 · Demo ───────────────────────────────────────────── */
 #s-demo .h2 { font-size: 56px; width: 640px; }
@@ -308,28 +331,27 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 .app .rep .rq { font-family: 'Fredoka'; font-weight: 700; font-size: 23px; line-height: 1.15; }
 .app .rep .rs { margin-top: 6px; font-size: 14px; color: var(--soft); }
 .app .rep .rs b { color: var(--brand); }
-.active .app .rep .meter u::after { animation: grow 1.2s cubic-bezier(.6,0,.2,1) both; animation-delay: calc(var(--base) + 2700ms + var(--i, 0) * 120ms); }
-
-/* ── 8 · Why it works ───────────────────────────────────── */
-#s-why .chart { position: absolute; left: 96px; top: 250px; width: 620px; }
-#s-why .chart h3 { font-family: 'Fredoka'; font-weight: 600; font-size: 28px; }
-#s-why .bars { margin-top: 26px; display: grid; gap: 26px; }
-#s-why .bar { display: grid; grid-template-columns: 1fr auto; row-gap: 8px; align-items: end; font-size: 22px; color: var(--soft); }
-#s-why .bar b { font-family: 'Fredoka'; font-size: 64px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
-#s-why .bar.win b { color: var(--brand); }
-#s-why .bar u { grid-column: 1 / -1; display: block; height: 34px; border-radius: 17px; background: var(--line); text-decoration: none; overflow: hidden; }
-#s-why .bar u::after { content: ''; display: block; height: 100%; width: var(--v); background: var(--faint); border-radius: 17px; transform: scaleX(0); transform-origin: left; }
-#s-why .bar.win u { background: var(--tint); }
-#s-why .bar.win u::after { background: var(--brand); }
-#s-why.active .bar u::after { animation: grow 1.6s cubic-bezier(.6,0,.2,1) forwards; animation-delay: calc(var(--base) + var(--d)); }
+.active .app .rep .meter u::after { animation: grow 1.1s cubic-bezier(.6,0,.2,1) both; animation-delay: calc(var(--base) + 1500ms + var(--i, 0) * 100ms); }
 @keyframes grow { to { transform: none; } }
-#s-why .chart p { margin-top: 26px; font-size: 22px; line-height: 1.4; color: var(--soft); }
-#s-why .ev { position: absolute; left: 820px; top: 240px; width: 690px; display: grid; gap: 30px; }
-#s-why .ev div { display: grid; grid-template-columns: 150px 1fr; gap: 22px; align-items: baseline; }
-#s-why .ev b { font-family: 'Fredoka'; font-weight: 700; font-size: 58px; line-height: 1; color: var(--brand); font-variant-numeric: tabular-nums; }
-#s-why .ev span { font-size: 22px; line-height: 1.4; color: var(--soft); }
-#s-why .ev span strong { color: var(--ink); font-weight: 800; }
-#s-why .ev .coach { display: block; width: 110px; height: 110px; margin: -30px 0 -20px; }
+/* The tailored feed on the title phone. */
+.app .fhead { display: flex; justify-content: space-between; align-items: center; padding: 58px 20px 0; }
+.app .wm2 { font-family: 'Fredoka'; font-weight: 700; font-size: 28px; color: var(--brand); }
+.app .wm2 i { display: inline-block; width: 7px; height: 7px; margin-left: 2px; border-radius: 50%; background: var(--brand); }
+.app .date { font-weight: 600; font-size: 13px; color: var(--soft); }
+.app .me { display: flex; align-items: center; gap: 8px; text-align: right; font-family: 'Fredoka'; font-weight: 600; font-size: 14px; line-height: 1.2; }
+.app .me small { font-family: 'Nunito'; font-size: 11px; color: var(--soft); }
+.app .me b { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 18px; }
+.app .tabs { display: flex; gap: 16px; margin-top: 14px; padding: 0 20px; border-bottom: 1px solid var(--line); font-family: 'Fredoka'; font-weight: 600; font-size: 16px; color: var(--faint); white-space: nowrap; overflow: hidden; }
+.app .tabs > * { padding-bottom: 8px; }
+.app .tabs b { color: var(--ink); font-weight: 600; box-shadow: inset 0 -4px 0 var(--brand); }
+.app .card2 { margin: 0 20px; padding: 14px 0; border-top: 1px solid var(--line); }
+.app .hello + .card2 { margin-top: 12px; }
+.app .topic { font-weight: 800; font-size: 12px; color: var(--ink); }
+.app .hl { margin-top: 3px; font-weight: 800; font-size: 19px; line-height: 1.25; }
+.app .brief { margin-top: 6px; font-weight: 700; font-size: 12.5px; color: var(--brand); }
+.app .otd { margin: 6px 20px 0; padding: 14px 16px; border-radius: 16px; background: #fff; border: 1.5px solid var(--line); font-family: 'Fredoka'; font-weight: 600; font-size: 15px; }
+.app .otd b { font-size: 30px; color: var(--brand); }
+.app .otd div { font-family: 'Nunito'; font-weight: 700; font-size: 15px; }
 
 /* ── 9 · Competition ────────────────────────────────────── */
 #s-comp .copy { position: absolute; left: 96px; top: 90px; width: 440px; }
@@ -354,86 +376,23 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 #s-comp .chip.us span { color: rgba(255,255,255,.85); }
 #s-comp.active .chip.us > div { animation-name: slam; }
 
-/* ── 10 · Traction ──────────────────────────────────────── */
-#s-traction .h2 { position: absolute; left: 96px; top: 80px; }
-#s-traction .live { position: absolute; left: 96px; top: 290px; width: 640px; }
-#s-traction h3 { font-family: 'Fredoka'; font-weight: 600; font-size: 30px; }
-#s-traction .live ul { list-style: none; padding: 0; margin-top: 26px; display: grid; gap: 24px; }
-#s-traction .live li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; font-size: 23px; line-height: 1.35; }
-#s-traction .live svg { width: 34px; height: 34px; margin-top: 1px; }
-#s-traction .mvp { margin-top: 28px; font-size: 20px; line-height: 1.4; color: var(--soft); }
-#s-traction .goals { position: absolute; left: 830px; top: 290px; width: 680px; }
-#s-traction .goals p { margin-top: 8px; font-size: 21px; color: var(--soft); }
-#s-traction .rings { margin-top: 34px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center; }
-#s-traction .gauge { position: relative; width: 190px; height: 190px; margin: 0 auto; }
-#s-traction .gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-#s-traction .gauge circle { fill: none; stroke-width: 16; stroke-linecap: round; }
-#s-traction .gauge .bg { stroke: var(--tint); }
-#s-traction .gauge .fg { stroke: var(--brand); stroke-dasharray: 503; stroke-dashoffset: 503; transition: stroke-dashoffset 1.6s cubic-bezier(.6,0,.2,1); }
-#s-traction .gauge b { position: absolute; inset: 0; display: grid; place-items: center; font-family: 'Fredoka'; font-weight: 700; font-size: 50px; font-variant-numeric: tabular-nums; }
-#s-traction .rings span { display: block; margin-top: 14px; font-size: 20px; line-height: 1.35; color: var(--soft); }
-
-/* ── 11 · Proof ─────────────────────────────────────────── */
-#s-proof .h2 { position: absolute; left: 96px; top: 80px; width: 1150px; }
-#s-proof .tiles { position: absolute; left: 96px; right: 96px; top: 300px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
-#s-proof .tile { background: #fff; border: 2px solid var(--line); border-radius: 28px; padding: 30px 28px; min-height: 420px; }
-#s-proof .tile:nth-child(odd) { transform: translateY(24px); }
-#s-proof .tile h3 { font-family: 'Fredoka'; font-weight: 600; font-size: 32px; }
-#s-proof .tile .big { margin-top: 36px; font-family: 'Fredoka'; font-weight: 700; font-size: 72px; line-height: 1; color: var(--brand); font-variant-numeric: tabular-nums; }
-#s-proof .tile p { margin-top: 14px; font-size: 21px; line-height: 1.4; color: var(--soft); }
-#s-proof.active .tile:nth-child(odd).a.flip { animation-name: flip-low; }
-@keyframes flip-low { 0% { opacity: 0; transform: perspective(1000px) translateY(24px) rotateY(85deg); } 100% { opacity: 1; transform: translateY(24px); } }
-
-/* ── 12 · Market size ───────────────────────────────────── */
-#s-size .h2 { position: absolute; left: 96px; top: 70px; width: 1300px; font-size: 56px; }
-#s-size .circles { position: absolute; left: 96px; top: 230px; width: 580px; height: 580px; }
-#s-size .circles div { position: absolute; left: 50%; bottom: 0; border-radius: 50%; transform: translateX(-50%) scale(0); transform-origin: 50% 100%; transition: transform 1s var(--spring); display: flex; justify-content: center; padding-top: 34px; font-family: 'Fredoka'; font-weight: 600; font-size: 30px; }
-#s-size .circles .tam { width: 580px; height: 580px; background: var(--tint); color: var(--brand); }
-#s-size .circles .sam { width: 380px; height: 380px; background: rgba(36, 51, 214, .28); color: var(--deep); }
-#s-size .circles .som { width: 180px; height: 180px; background: var(--brand); color: #fff; padding-top: 0; align-items: center; }
-#s-size .circles div.on { transform: translateX(-50%) scale(1); }
-#s-size .rows { position: absolute; left: 820px; top: 240px; width: 690px; display: grid; gap: 34px; }
-#s-size .rows > div { opacity: .25; transition: opacity .5s, transform .5s var(--spring); transform-origin: left center; }
-#s-size .rows > div.on { opacity: 1; }
-#s-size .rows > div.now { transform: scale(1.03); }
-#s-size .rows b { display: block; font-family: 'Fredoka'; font-weight: 700; font-size: 64px; line-height: 1; color: var(--brand); font-variant-numeric: tabular-nums; }
-#s-size .rows h3 { margin-top: 6px; font-family: 'Fredoka'; font-weight: 600; font-size: 26px; }
-#s-size .rows p { margin-top: 4px; font-size: 20px; line-height: 1.4; color: var(--soft); }
-
-/* ── 13 · Model ─────────────────────────────────────────── */
-#s-model .h2 { position: absolute; left: 96px; top: 70px; }
-#s-model .plans { position: absolute; left: 96px; right: 96px; top: 280px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: start; }
-#s-model .plan { background: #fff; border: 2px solid var(--line); border-radius: 28px; padding: 32px; min-height: 470px; }
-#s-model .plan.up { background: var(--brand); border-color: var(--brand); color: #fff; min-height: 510px; margin-top: -20px; }
-#s-model .plan h3 { font-family: 'Fredoka'; font-weight: 600; font-size: 34px; }
-#s-model .price { margin-top: 18px; font-family: 'Fredoka'; font-weight: 700; font-size: 70px; line-height: 1; }
-#s-model .price small { font-size: 26px; font-weight: 600; opacity: .7; }
-#s-model .plan ul { list-style: none; padding: 0; margin-top: 28px; display: grid; gap: 14px; font-size: 22px; line-height: 1.35; }
-#s-model .plan li::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 12px; border-radius: 50%; background: var(--brand); vertical-align: 3px; }
-#s-model .plan.up li::before { background: #fff; }
-#s-model .plan.up .tagl { margin-top: 10px; font-size: 21px; opacity: .85; }
-#s-model .anchor { position: absolute; left: 96px; bottom: 70px; font-size: 21px; color: var(--soft); }
-
 /* ── 14 · Team ──────────────────────────────────────────── */
 #s-team .h2 { position: absolute; left: 96px; top: 70px; }
-#s-team .person { position: absolute; top: 190px; width: 560px; }
+#s-team .person { position: absolute; top: 160px; width: 560px; }
 #s-team .person:nth-of-type(1) { left: 130px; }
 #s-team .person:nth-of-type(2) { left: 910px; }
-#s-team .photo { position: relative; width: 300px; height: 360px; }
-#s-team .photo::before { content: ''; position: absolute; left: 0; bottom: 0; width: 300px; height: 300px; border-radius: 50%; background: var(--brand); }
-#s-team .photo img { position: absolute; left: 50%; bottom: 0; width: 300px; height: 380px; object-fit: cover; object-position: top; transform: translateX(-50%); border-radius: 0 0 150px 150px; }
+#s-team .photo { position: relative; width: 260px; height: 310px; }
+#s-team .photo::before { content: ''; position: absolute; left: 0; bottom: 0; width: 260px; height: 260px; border-radius: 50%; background: var(--brand); }
+#s-team .photo img { position: absolute; left: 50%; bottom: 0; width: 260px; height: 330px; object-fit: cover; object-position: top; transform: translateX(-50%); border-radius: 0 0 130px 130px; }
 #s-team .photo.empty::before { background: transparent; border: 4px dashed var(--faint); }
-#s-team .photo.empty .ph { position: absolute; left: 0; bottom: 0; width: 300px; height: 300px; display: grid; place-items: center; text-align: center; font-family: 'Fredoka'; font-weight: 600; font-size: 22px; color: var(--faint); }
-#s-team h3 { margin-top: 26px; font-family: 'Fredoka'; font-weight: 700; font-size: 50px; }
+#s-team .photo.empty .ph { position: absolute; left: 0; bottom: 0; width: 260px; height: 260px; display: grid; place-items: center; text-align: center; font-family: 'Fredoka'; font-weight: 600; font-size: 22px; color: var(--faint); }
+#s-team h3 { margin-top: 20px; font-family: 'Fredoka'; font-weight: 700; font-size: 46px; }
 #s-team .role { margin-top: 4px; font-family: 'Fredoka'; font-weight: 600; font-size: 24px; color: var(--brand); }
 #s-team ul { list-style: none; padding: 0; margin-top: 16px; display: grid; gap: 8px; font-size: 21px; line-height: 1.35; color: var(--soft); }
 
-/* ── 15 · Close ─────────────────────────────────────────── */
-#s-close .lines { position: absolute; left: 96px; top: 110px; font-size: 140px; line-height: 1.02; }
-#s-close .lines div { display: block; }
-#s-close .word { position: absolute; left: 96px; bottom: 90px; font-size: 64px; }
-#s-close .word i { display: inline-block; width: 13px; height: 13px; margin-left: 4px; border-radius: 50%; background: #fff; }
-#s-close .thanks { position: absolute; left: 520px; bottom: 100px; font-size: 26px; color: rgba(255,255,255,.8); }
+#s-team .close { position: absolute; left: 96px; right: 96px; bottom: 56px; display: flex; justify-content: space-between; align-items: baseline; padding-top: 22px; border-top: 2px solid var(--line); }
+#s-team .close .display { font-size: 40px; color: var(--brand); }
+#s-team .close p { font-family: 'Fredoka'; font-weight: 600; font-size: 24px; color: var(--soft); }
 
 /* ── HUD ────────────────────────────────────────────────── */
 #progress { position: fixed; left: 0; bottom: 0; height: 5px; background: var(--brand); z-index: 50; transition: width .6s cubic-bezier(.6,0,.2,1), background-color .4s; }
@@ -453,103 +412,83 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 
   <!-- 1 · Title -->
   <section class="slide" id="s-title" aria-label="Speek">
-    <div class="pond a pop" style="--d: 900ms"></div>
-    <h1 class="mark display" data-split>speek<span class="stop a pop" style="--d: 900ms"></span></h1>
-    <h2 class="tag display" data-words style="--d: 1100ms; --step: 260ms">Read it. Argue it. Keep it.</h2>
-    <p class="lede a fade" style="--d: 2000ms">The news app where every story ends in a debate. You read it, argue it out loud against Quibbit, and keep the facts for your next real conversation.</p>
-    <p class="by a fade" style="--d: 2300ms">Ayushman Chaudhuri and Katherine Chen</p>
-    <div class="tilt"><div class="a lift" style="--d: 700ms; --r0: 10deg; --r1: 0deg"><div class="phone"><div class="screen" data-screen="welcome" role="img" aria-label="Speek's welcome screen, with Quibbit waving"></div></div></div></div>
+    <div class="pond a pop" style="--d: 500ms"></div>
+    <h1 class="mark display" data-split>speek<span class="stop a pop" style="--d: 450ms"></span></h1>
+    <h2 class="tag display" data-words style="--d: 500ms; --step: 150ms">Read it. Argue it. Keep it.</h2>
+    <p class="lede a fade" style="--d: 1100ms">News built around what you’re into, summarised in a minute. Then Quibbit takes the other side, and you argue it out loud.</p>
+    <p class="by a fade" style="--d: 1300ms">Ayushman Chaudhuri and Katherine Chen</p>
+    <div class="tilt"><div class="a lift" style="--d: 300ms; --r0: 10deg; --r1: 0deg"><div class="phone"><div class="screen" data-screen="feed" role="img" aria-label="A Speek feed tailored to Formula 1, space and climate"></div></div></div></div>
   </section>
 
-  <!-- 2 · The silence -->
-  <section class="slide dark" id="s-silence" aria-label="The question">
-    <h2 class="q display" data-words style="--step: 200ms">“So… what do you think?”</h2>
-    <svg class="bubble" viewBox="0 0 360 220" aria-hidden="true">
-      <path d="M60 10 H300 Q350 10 350 60 V130 Q350 180 300 180 H130 L70 214 L84 180 H60 Q10 180 10 130 V60 Q10 10 60 10 Z"/>
-      <circle cx="130" cy="95" r="14" style="--i: 0"/><circle cx="180" cy="95" r="14" style="--i: 1"/><circle cx="230" cy="95" r="14" style="--i: 2"/>
-    </svg>
-    <p class="cap a fade" style="--d: 4200ms">Everyone has been asked this. Most of us had nothing ready.</p>
-  </section>
-
-  <!-- 3 · Problem -->
+  <!-- 2 · Problem -->
   <section class="slide" id="s-problem" aria-label="The problem">
     <h2 class="h2 a wipe" style="max-width: 1100px">We scroll past the news, then freeze when someone asks about it.</h2>
     <div class="grid">
-      <div class="stat" data-fill="61" data-at="300">
+      <div class="stat" data-fill="61" data-at="150">
         <div class="waffle"></div>
-        <div class="num" data-count="61" data-suffix="%" data-delay="300">0%</div>
+        <div class="num" data-count="61" data-suffix="%" data-delay="150">0%</div>
         <p>of US college students fear <b>public speaking</b>. Only death and money rank higher.</p>
       </div>
-      <div class="stat" data-fill="74" data-at="900">
+      <div class="stat" data-fill="74" data-at="400">
         <div class="waffle"></div>
-        <div class="num" data-count="74" data-suffix="%" data-delay="900">0%</div>
+        <div class="num" data-count="74" data-suffix="%" data-delay="400">0%</div>
         <p>of working adults struggle with <b>small talk at work</b>. 4 in 10 younger workers say it feels like a new language.</p>
       </div>
-      <div class="stat" data-fill="40" data-at="1500">
+      <div class="stat" data-fill="40" data-at="650">
         <div class="waffle"></div>
-        <div class="num" data-count="40" data-suffix="%" data-delay="1500">0%</div>
+        <div class="num" data-count="40" data-suffix="%" data-delay="650">0%</div>
         <p>of people <b>avoid the news</b> at least sometimes. Under-35s are more likely to say it’s too hard to follow.</p>
       </div>
-      <div class="stat" data-fill="39" data-at="2100">
+      <div class="stat" data-fill="39" data-at="900">
         <div class="waffle"></div>
-        <div class="num" data-count="39" data-suffix="%" data-delay="2100">0%</div>
+        <div class="num" data-count="39" data-suffix="%" data-delay="900">0%</div>
         <p>of employers unhappy with recent graduates blame <b>poor communication</b>.</p>
       </div>
     </div>
     <p class="src">Sources: Dwyer &amp; Davidson, Communication Research Reports (2012); Tilda poll of 2,000 working adults (2025); Reuters Institute Digital News Report (2025); US employer survey reported by The Washington Times (2024).</p>
   </section>
 
-  <!-- 4 · Insight -->
+  <!-- 3 · Insight -->
   <section class="slide cobalt" id="s-insight" aria-label="The insight">
     <div class="mark a pop" aria-hidden="true">“</div>
-    <p class="quote" data-type="I read something about this last week. How does it connect to what you just said?" data-delay="500"></p>
-    <div class="notes">
-      <p class="a wipe" style="--d: 4300ms">At every networking event and fireside chat, that question is where the real conversation starts.</p>
-      <p class="a wipe" style="--d: 5200ms">The person who asked it wasn’t the best speaker in the room. They’d just read something, and brought it up.</p>
+    <p class="quote" data-type="I read something about this last week. How does it connect to what you just said?" data-delay="100"></p>
+    <p class="note a wipe" style="--d: 2300ms">At networking events and in class, that question is where the real conversation starts. The person asking isn’t the best speaker in the room. They just read something, and said it.</p>
+    <p class="punch display a slam" style="--d: 2900ms">Good conversation isn’t a talent. It’s reading, then practising out loud.</p>
+    <div class="proof">
+      <div class="a pop" style="--d: 3300ms"><b>61% vs 40%</b><span>remembered an article a week later when people recalled it, versus re-read it.</span></div>
+      <div class="a pop" style="--d: 3500ms"><b>957 debates</b><span>arguing by voice with an AI opponent drew out a wider range of ideas than typing.</span></div>
+      <div class="a pop" style="--d: 3700ms"><b>759 students</b><span>practising with a voice AI before class raised their participation in the real discussion.</span></div>
     </div>
-    <p class="punch display a slam" style="--d: 6400ms">Good conversation isn’t a talent. It’s having read something, and having said it out loud before.</p>
+    <p class="src">Sources: Roediger &amp; Karpicke, Psychological Science (2006); Jain &amp; Wang, arXiv (2026); Columbia Business School MBA field experiment (2025).</p>
   </section>
 
-  <!-- 5 · Meet -->
-  <section class="slide" id="s-meet" aria-label="Meet Speek and Quibbit">
-    <div class="copy">
-      <h2 class="h2 a wipe" style="--d: 500ms">Meet Speek, and the frog who disagrees with you.</h2>
-      <p class="lede a fade" style="--d: 1100ms">Pick any story. Quibbit finds the question people actually split on, takes the side you didn’t, and argues it out loud for four rounds.</p>
-      <div class="does">
-        <div class="a pop" style="--d: 1700ms"><svg viewBox="0 0 54 54"><rect x="9" y="7" width="36" height="40" rx="8" fill="#E5E8FC"/><path d="M17 19h20M17 27h20M17 35h12" stroke="#2433D6" stroke-width="4" stroke-linecap="round"/></svg><p><b>Reads what you read</b><span>A feed from anything you’re into. A story only counts once you’ve actually read it.</span></p></div>
-        <div class="a pop" style="--d: 2100ms"><svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="22" fill="#E5E8FC"/><path d="M16 24c4-6 18-6 22 0M16 32c4 6 18 6 22 0" stroke="#2433D6" stroke-width="4" stroke-linecap="round" fill="none"/></svg><p><b>Argues back with facts</b><span>Counters you out loud, quoting the stories in your own library.</span></p></div>
-        <div class="a pop" style="--d: 2500ms"><svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="22" fill="#E5E8FC"/><path d="M17 28l7 7 13-15" stroke="#2433D6" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><p><b>Judges the argument, never the opinion</b><span>Underlines weak spots in your own words, then shows the best case for the other side.</span></p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6 · How it works -->
-  <section class="slide" id="s-how" aria-label="How it works">
+  <!-- 4 · How it works -->
+  <section class="slide" id="s-how" aria-label="How Speek works">
     <h2 class="h2 a wipe">One loop: read it, argue it, keep it.</h2>
     <svg class="path" viewBox="0 0 1600 900" aria-hidden="true">
-      <path d="M465 560 C 520 470, 585 470, 635 560 M 965 560 C 1020 470, 1085 470, 1135 560"/>
-      <path class="mask" d="M465 560 C 520 470, 585 470, 635 560 M 965 560 C 1020 470, 1085 470, 1135 560"/>
+      <path d="M465 590 C 520 500, 585 500, 635 590 M 965 590 C 1020 500, 1085 500, 1135 590"/>
+      <path class="mask" d="M465 590 C 520 500, 585 500, 635 590 M 965 590 C 1020 500, 1085 500, 1135 590"/>
     </svg>
     <div class="step" style="left: 100px">
-      <h3 class="a pop" style="--d: 300ms"><i>1</i>Read it</h3>
-      <p class="a fade" style="--d: 400ms">A feed from your interests. Tap the facts worth keeping to clip them.</p>
-      <div class="phone a lift" style="--d: 500ms; --r0: -6deg; --r1: 0deg"><div class="screen" data-screen="story" role="img" aria-label="A story in Speek, with facts to clip"></div></div>
+      <h3 class="a pop" style="--d: 150ms"><i>1</i>Read it</h3>
+      <p class="a fade" style="--d: 250ms">A feed built from anything you’re into. Each story becomes a one-minute brief: what happened, the facts to keep, where people split.</p>
+      <div class="phone a lift" style="--d: 300ms; --r0: -6deg; --r1: 0deg"><div class="screen" data-screen="story" role="img" aria-label="A one-minute brief in Speek, with facts to clip"></div></div>
     </div>
     <div class="step" style="left: 600px">
-      <h3 class="a pop" style="--d: 1300ms"><i>2</i>Argue it</h3>
-      <p class="a fade" style="--d: 1400ms">Pick a side and say it out loud. Quibbit counters with facts.</p>
-      <div class="phone a lift" style="--d: 1500ms; --r0: 6deg; --r1: 0deg"><div class="screen" data-screen="debate" role="img" aria-label="Picking a side in a Speek debate"></div></div>
+      <h3 class="a pop" style="--d: 650ms"><i>2</i>Argue it</h3>
+      <p class="a fade" style="--d: 750ms">Pick a side and say it out loud. Quibbit, our frog, takes the other side and counters with facts from what you read.</p>
+      <div class="phone a lift" style="--d: 800ms; --r0: 6deg; --r1: 0deg"><div class="screen" data-screen="debate" role="img" aria-label="Picking a side in a Speek debate"></div></div>
     </div>
     <div class="step" style="left: 1100px">
-      <h3 class="a pop" style="--d: 2300ms"><i>3</i>Keep it</h3>
-      <p class="a fade" style="--d: 2400ms">A report on how you argued, and the facts you missed.</p>
-      <div class="phone a lift" style="--d: 2500ms; --r0: -6deg; --r1: 0deg"><div class="screen" data-screen="report" role="img" aria-label="A Speek debate report scoring how you argued"></div></div>
+      <h3 class="a pop" style="--d: 1150ms"><i>3</i>Keep it</h3>
+      <p class="a fade" style="--d: 1250ms">A report that scores how you argued, never what you think: the holes in your words, the facts you missed, the other side’s best case.</p>
+      <div class="phone a lift" style="--d: 1300ms; --r0: -6deg; --r1: 0deg"><div class="screen" data-screen="report" role="img" aria-label="A Speek debate report scoring how you argued"></div></div>
     </div>
   </section>
 
-  <!-- 7 · Live demo -->
+  <!-- 5 · Live demo -->
   <section class="slide" id="s-demo" aria-label="Demo">
-    <h2 class="h2 a wipe">A debate, start to finish, in 25 seconds.</h2>
+    <h2 class="h2 a wipe">A debate, start to finish.</h2>
     <ol>
       <li><i>1</i>Quibbit finds the question people actually disagree on.</li>
       <li><i>2</i>You drag yourself to a side.</li>
@@ -558,37 +497,18 @@ h1, h2, h3, p, ol, ul { margin: 0; }
       <li><i>5</i>Quibbit counters with facts from what you read.</li>
       <li><i>6</i>Your report scores how you argued, not what you think.</li>
     </ol>
-    <div class="phone a pop" style="--d: 200ms"><div class="screen" id="demo-screen"></div></div>
+    <div class="phone a pop" style="--d: 100ms"><div class="screen" id="demo-screen"></div></div>
   </section>
 
-  <!-- 8 · Why it works -->
-  <section class="slide" id="s-why" aria-label="Why it works">
-    <h2 class="h2 a wipe">Saying it out loud is how it sticks.</h2>
-    <div class="chart">
-      <h3 class="a fade" style="--d: 200ms">How much of an article people remembered a week later</h3>
-      <div class="bars">
-        <div class="bar a fade" style="--d: 400ms; --v: 40%">Read it four times<b data-count="40" data-suffix="%" data-delay="500">0%</b><u></u></div>
-        <div class="bar win a fade" style="--d: 700ms; --v: 61%">Read it once, then recalled it three times<b data-count="61" data-suffix="%" data-delay="800">0%</b><u></u></div>
-      </div>
-      <p class="a fade" style="--d: 2200ms">Pulling it back out of your head beats reading it again. Every Speek debate is that pull.</p>
-    </div>
-    <div class="ev">
-      <div class="a pop" style="--d: 2600ms"><b data-count="957" data-delay="2600">0</b><span><strong>student debates:</strong> arguing by voice with an AI opponent produced a wider range of ideas than typing.</span></div>
-      <div class="a pop" style="--d: 3300ms"><b data-count="759" data-delay="3300">0</b><span><strong>MBA students:</strong> two practice sessions with a voice AI partner before class raised their participation in the real discussion.</span></div>
-      <div class="a pop" style="--d: 4000ms"><i class="coach" data-frog="idle"></i><span><strong>A friendly AI coach</strong> lowered people’s anxiety before speaking. That’s why your opponent is a frog, not a judge.</span></div>
-    </div>
-    <p class="src">Sources: Roediger &amp; Karpicke, Psychological Science (2006), Experiment 2; Jain &amp; Wang, arXiv (2026); Columbia Business School field experiment, fall 2025; Wang et al., “Alexa as Coach”, CHI (2020).</p>
-  </section>
-
-  <!-- 9 · Competition -->
+  <!-- 6 · Competition -->
   <section class="slide" id="s-comp" aria-label="Competition">
     <div class="copy">
       <h2 class="h2 a wipe">Everyone else does one part.</h2>
       <div class="ticks">
-        <div class="a pop" style="--d: 3300ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Built on your interests</div>
-        <div class="a pop" style="--d: 3550ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>You read first</div>
-        <div class="a pop" style="--d: 3800ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>You speak out loud</div>
-        <div class="a pop" style="--d: 4050ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Every argument scored</div>
+        <div class="a pop" style="--d: 1700ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Built on your interests</div>
+        <div class="a pop" style="--d: 1850ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>You read first</div>
+        <div class="a pop" style="--d: 2000ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>You speak out loud</div>
+        <div class="a pop" style="--d: 2150ms"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#2433D6"/><path d="M12 21l6 6 11-13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Every argument scored</div>
       </div>
     </div>
     <div class="plot">
@@ -598,88 +518,71 @@ h1, h2, h3, p, ol, ul { margin: 0; }
       <span class="lab" style="left: 50%; bottom: -6px; transform: translate(-50%, 100%)">Just consuming</span>
       <span class="lab" style="left: 0; top: 50%; transform: translateY(12px)">Generic prompts</span>
       <span class="lab" style="right: 0; top: 50%; transform: translateY(12px)">Your interests</span>
-      <div class="chip" style="left: 19%; top: 13%"><div style="--d: 300ms; --fx: -300px; --fy: -200px"><b>Yoodli</b><span>Speaking, on generic work prompts. Fixes delivery, not substance.</span></div></div>
-      <div class="chip" style="left: 17%; top: 37%"><div style="--d: 600ms; --fx: -400px; --fy: 0px"><b>Speak, Duolingo</b><span>Speaking drills, in another language.</span></div></div>
-      <div class="chip" style="left: 33%; top: 64%"><div style="--d: 900ms; --fx: -200px; --fy: 300px"><b>Debate Ladder, ArguFight</b><span>Arguing random topics, with nothing to read first.</span></div></div>
-      <div class="chip" style="left: 50%; top: 30%"><div style="--d: 1200ms; --fx: 300px; --fy: -100px"><b>ChatGPT voice</b><span>Talks about anything. Agrees with you, and keeps no score.</span></div></div>
-      <div class="chip" style="left: 77%; top: 80%"><div style="--d: 1500ms; --fx: 300px; --fy: 300px"><b>Reddit, YouTube, Jubilee</b><span>Your interests, but you only watch and scroll.</span></div></div>
-      <div class="chip us" style="left: 74%; top: 14%"><div style="--d: 2500ms"><b>Speek</b><span>Your interests, read first, out loud, scored.</span></div></div>
+      <div class="chip" style="left: 19%; top: 13%"><div style="--d: 150ms; --fx: -300px; --fy: -200px"><b>Yoodli</b><span>Speaking, on generic work prompts. Fixes delivery, not substance.</span></div></div>
+      <div class="chip" style="left: 17%; top: 37%"><div style="--d: 300ms; --fx: -400px; --fy: 0px"><b>Speak, Duolingo</b><span>Speaking drills, in another language.</span></div></div>
+      <div class="chip" style="left: 33%; top: 64%"><div style="--d: 450ms; --fx: -200px; --fy: 300px"><b>Debate Ladder, ArguFight</b><span>Arguing random topics, with nothing to read first.</span></div></div>
+      <div class="chip" style="left: 50%; top: 30%"><div style="--d: 600ms; --fx: 300px; --fy: -100px"><b>ChatGPT voice</b><span>Talks about anything. Agrees with you, and keeps no score.</span></div></div>
+      <div class="chip" style="left: 77%; top: 80%"><div style="--d: 750ms; --fx: 300px; --fy: 300px"><b>Reddit, YouTube, Jubilee</b><span>Your interests, but you only watch and scroll.</span></div></div>
+      <div class="chip us" style="left: 74%; top: 14%"><div style="--d: 1200ms"><b>Speek</b><span>Your interests, read first, out loud, scored.</span></div></div>
     </div>
   </section>
 
-  <!-- 10 · Traction -->
-  <section class="slide" id="s-traction" aria-label="Traction">
-    <h2 class="h2 a wipe">A working MVP, ready for its first pilot.</h2>
-    <div class="live">
-      <h3 class="a fade" style="--d: 300ms">What the MVP already does</h3>
-      <ul>
-        <li class="a pop" style="--d: 500ms"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Runs on iOS, Android and web from one codebase</li>
-        <li class="a pop" style="--d: 750ms"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>A news feed built from any interest, however niche</li>
-        <li class="a pop" style="--d: 1000ms"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Spoken debates: your voice transcribed, Quibbit’s voice back</li>
-        <li class="a pop" style="--d: 1250ms"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Reads only count once you’ve actually read</li>
-        <li class="a pop" style="--d: 1500ms"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>A five-skill report after every debate</li>
-      </ul>
-      <p class="mvp a fade" style="--d: 1700ms">Not released yet: no app store listing and no public users. The next step is a closed pilot.</p>
-    </div>
-    <!-- EDIT: these are pilot targets, not results. Swap in real numbers once the pilot runs. -->
-    <div class="goals">
-      <h3 class="a fade" style="--d: 1800ms">What our 30-day pilot has to prove</h3>
-      <p class="a fade" style="--d: 1900ms">Targets for our first closed pilot, before any launch.</p>
-      <div class="rings">
-        <div class="a pop" style="--d: 2200ms"><div class="gauge" data-ring="25"><svg viewBox="0 0 180 180"><circle class="bg" cx="90" cy="90" r="80"/><circle class="fg" cx="90" cy="90" r="80"/></svg><b data-count="25" data-suffix="%" data-delay="2300">0%</b></div><span>of new users still debating on day 7</span></div>
-        <div class="a pop" style="--d: 2500ms"><div class="gauge" data-ring="20"><svg viewBox="0 0 180 180"><circle class="bg" cx="90" cy="90" r="80"/><circle class="fg" cx="90" cy="90" r="80"/></svg><b data-count="20" data-prefix="+" data-suffix="%" data-delay="2600">0%</b></div><span>higher score by their fifth debate</span></div>
-        <div class="a pop" style="--d: 2800ms"><div class="gauge" data-ring="43"><svg viewBox="0 0 180 180"><circle class="bg" cx="90" cy="90" r="80"/><circle class="fg" cx="90" cy="90" r="80"/></svg><b data-count="3" data-delay="2900">0</b></div><span>debates per active user each week</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 11 · Proof people pay -->
-  <section class="slide" id="s-proof" aria-label="People pay to talk better">
+  <!-- 7 · Market -->
+  <section class="slide" id="s-market" aria-label="Market">
     <h2 class="h2 a wipe">People already pay to get better at talking.</h2>
     <div class="tiles">
-      <div class="tile a flip" style="--d: 300ms"><h3>Speak</h3><div class="big" data-count="1" data-prefix="$" data-suffix="B" data-delay="500">$0B</div><p>valuation after a $78M round, for learning languages by talking out loud.</p></div>
-      <div class="tile a flip" style="--d: 650ms"><h3>Yoodli</h3><div class="big" data-count="300" data-prefix="$" data-suffix="M+" data-delay="850">$0M+</div><p>valuation after a $40M Series B, for AI communication coaching.</p></div>
-      <div class="tile a flip" style="--d: 1000ms"><h3>Duolingo</h3><div class="big" data-count="12.7" data-decimals="1" data-suffix="M" data-delay="1200">0M</div><p>people paying for a daily learning habit, out of 58.7M daily users.</p></div>
-      <div class="tile a flip" style="--d: 1350ms"><h3>Jubilee</h3><div class="big" data-count="380" data-suffix="M+" data-delay="1550">0M+</div><p>views a month of debate-style video, mostly from 18 to 34 year olds.</p></div>
+      <div class="tile a flip" style="--d: 150ms"><h3>Speak</h3><div class="big" data-count="1" data-prefix="$" data-suffix="B" data-delay="250">$0B</div><p>valuation, for learning languages by talking out loud</p></div>
+      <div class="tile a flip" style="--d: 300ms"><h3>Yoodli</h3><div class="big" data-count="300" data-prefix="$" data-suffix="M+" data-delay="400">$0M+</div><p>valuation, for AI communication coaching</p></div>
+      <div class="tile a flip" style="--d: 450ms"><h3>Duolingo</h3><div class="big" data-count="12.7" data-decimals="1" data-suffix="M" data-delay="550">0M</div><p>people paying for a daily learning habit</p></div>
+      <div class="tile a flip" style="--d: 600ms"><h3>Jubilee</h3><div class="big" data-count="380" data-suffix="M+" data-delay="700">0M+</div><p>monthly views of debate-style video</p></div>
     </div>
-    <p class="src">Sources: TechCrunch (Dec 2024; Dec 2025); Duolingo Form 10-Q, Q2 2026; Jubilee via NPR (Jul 2026).</p>
-  </section>
-
-  <!-- 12 · Market size -->
-  <section class="slide" id="s-size" aria-label="Market size">
-    <h2 class="h2 a wipe">A huge market, and a small slice is already a real business.</h2>
-    <div class="circles">
-      <div class="tam">TAM</div>
-      <div class="sam">SAM</div>
-      <div class="som">SOM</div>
-    </div>
+    <div class="circles"><div class="tam">TAM</div><div class="sam">SAM</div><div class="som">SOM</div></div>
     <div class="rows">
-      <div><b data-count="37.7" data-decimals="1" data-prefix="$" data-suffix="B" data-manual>$0B</b><h3>Soft-skills training, worldwide, 2026</h3><p>Growing to $93.4B by 2035. Communication is its largest segment.</p></div>
-      <div><b data-count="1.26" data-decimals="2" data-prefix="$" data-suffix="B" data-manual>$0B</b><h3>People who already pay for a daily learning app</h3><p>12.7M paying subscribers, at $99 a year.</p></div>
-      <div><b data-count="12.6" data-decimals="1" data-prefix="$" data-suffix="M ARR" data-manual>$0M ARR</b><h3>Our first slice</h3><p>1% of Duolingo’s daily users, at their 21.6% paying rate, at $99 a year.</p></div>
+      <div><b data-count="37.7" data-decimals="1" data-prefix="$" data-suffix="B" data-manual>$0B</b><div><h3>Soft-skills training, worldwide, 2026</h3><p>Growing to $93.4B by 2035. Communication is its largest segment.</p></div></div>
+      <div><b data-count="1.26" data-decimals="2" data-prefix="$" data-suffix="B" data-manual>$0B</b><div><h3>People already paying for a daily learning app</h3><p>12.7M paying Duolingo subscribers, at $99 a year.</p></div></div>
+      <div><b data-count="12.6" data-decimals="1" data-prefix="$" data-suffix="M" data-manual>$0M</b><div><h3>Our first slice, in annual revenue</h3><p>1% of Duolingo’s daily users, at their 21.6% paying rate, at $99 a year.</p></div></div>
     </div>
-    <p class="src">Sources: Grand View Research, Soft Skills Training Market (2026 to 2035); Duolingo Form 10-Q, Q2 2026; Speak’s $99 annual price via TechCrunch (2024).</p>
+    <p class="src">Sources: TechCrunch (2024, 2025); Duolingo Form 10-Q, Q2 2026; NPR (2026); Grand View Research, Soft Skills Training Market (2026 to 2035).</p>
   </section>
 
-  <!-- 13 · Model -->
-  <section class="slide" id="s-model" aria-label="Business model">
+  <!-- 8 · Model and where we are -->
+  <section class="slide" id="s-model" aria-label="Business model and status">
     <h2 class="h2 a wipe">Free to start. Unlimited to get good.</h2>
     <div class="plans">
-      <div class="plan a flip" style="--d: 300ms"><h3>Free</h3><div class="price">S$0</div><ul><li>Every article and brief</li><li>One debate a day</li><li>A full report after it</li></ul></div>
-      <div class="plan up a flip" style="--d: 700ms"><h3>SpeekUp</h3><div class="price">S$9.99<small> / month</small></div><p class="tagl">Keep Speeking to your heart’s desire.</p><ul><li>Unlimited debates</li><li>Your skill history over time</li><li>Every story, any interest</li></ul></div>
-      <div class="plan a flip" style="--d: 1100ms"><h3>Next</h3><div class="price">Seats</div><ul><li>Schools and debate clubs</li><li>Company onboarding and sales teams</li><li>Class leaderboards and a teacher view</li></ul></div>
+      <h3 class="k a fade" style="--d: 100ms">How we’ll make money</h3>
+      <div class="plan a pop" style="--d: 200ms"><div><b>Free</b><div class="price">S$0</div></div><p>Every story and brief, plus one debate a day.</p></div>
+      <div class="plan up a pop" style="--d: 400ms"><div><b>SpeekUp</b><div class="price">S$9.99<small> / month</small></div></div><p>Unlimited debates and your skill history. Keep Speeking to your heart’s desire.</p></div>
+      <div class="plan a pop" style="--d: 600ms"><div><b>Schools and teams</b><div class="price">Seats</div></div><p>Debate clubs, classes and onboarding, with a teacher view. Next year.</p></div>
     </div>
-    <p class="anchor a fade" style="--d: 1800ms">Planned pricing, nothing is charged in the MVP. For comparison, Speak charges US$20 a month; SpeekUp would cost under US$8.</p>
+    <!-- EDIT: pilot targets, not results. Swap in real numbers once the pilot runs. -->
+    <div class="now">
+      <h3 class="k a fade" style="--d: 700ms">Where we are</h3>
+      <div class="card a pop" style="--d: 800ms">
+        <ul>
+          <li><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>A working MVP on iOS, Android and web</li>
+          <li><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Interest-built feed with AI briefs of every story</li>
+          <li><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Spoken debates and a five-skill report</li>
+          <li><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Not released yet: no store listing, no users</li>
+        </ul>
+        <div class="tag">Next: a 30-day closed pilot. Our targets:</div>
+        <div class="goals">
+          <div><b data-count="25" data-suffix="%" data-delay="1000">0%</b><span>still debating on day 7</span></div>
+          <div><b data-count="20" data-prefix="+" data-suffix="%" data-delay="1100">0%</b><span>score by the fifth debate</span></div>
+          <div><b data-count="3" data-delay="1200">0</b><span>debates a week per user</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="anchor a fade" style="--d: 1000ms">Planned pricing; nothing is charged in the MVP. For comparison, Speak charges US$20 a month.</p>
   </section>
 
-  <!-- 14 · Team -->
+  <!-- 9 · Team -->
   <section class="slide" id="s-team" aria-label="Team">
     <h2 class="h2 a wipe">The team.</h2>
     <div class="person">
-      <div class="photo a pop" style="--d: 300ms"><img src="img/ayushman.webp" alt="Ayushman Chaudhuri"></div>
-      <h3 class="a wipe" style="--d: 700ms">Ayushman Chaudhuri</h3>
-      <p class="role a fade" style="--d: 900ms">Co-founder and CEO</p>
-      <ul class="a fade" style="--d: 1100ms">
+      <div class="photo a pop" style="--d: 150ms"><img src="img/ayushman.webp" alt="Ayushman Chaudhuri"></div>
+      <h3 class="a wipe" style="--d: 350ms">Ayushman Chaudhuri</h3>
+      <p class="role a fade" style="--d: 450ms">Co-founder and CEO</p>
+      <ul class="a fade" style="--d: 550ms">
         <li>Computing@NUS</li>
         <li>World #8 of 20,000 developers, lablab.ai AMD hackathon</li>
         <li>Technical Executive, NUS Entrepreneurship Society</li>
@@ -688,27 +591,17 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     </div>
     <!-- EDIT: Katherine's photo. Swap .photo.empty for <div class="photo"><img src="img/katherine.webp" alt="Katherine Chen"></div> -->
     <div class="person">
-      <div class="photo empty a pop" style="--d: 600ms"><div class="ph">Photo<br>coming soon</div></div>
-      <h3 class="a wipe" style="--d: 1000ms">Katherine Chen</h3>
-      <p class="role a fade" style="--d: 1200ms">Co-founder and Head of Design</p>
-      <ul class="a fade" style="--d: 1400ms">
+      <div class="photo empty a pop" style="--d: 300ms"><div class="ph">Photo<br>coming soon</div></div>
+      <h3 class="a wipe" style="--d: 500ms">Katherine Chen</h3>
+      <p class="role a fade" style="--d: 600ms">Co-founder and Head of Design</p>
+      <ul class="a fade" style="--d: 700ms">
         <li>Design at the University of Waterloo</li>
         <li>UX designer for product and interactive design</li>
         <li>Global finalist, NASA Space Apps Challenge</li>
         <li>2nd place, Rogers Communications Design Hackathon</li>
       </ul>
     </div>
-  </section>
-
-  <!-- 15 · Close -->
-  <section class="slide cobalt" id="s-close" aria-label="Thank you">
-    <div class="lines display">
-      <div class="a slam" style="--d: 300ms">Read it.</div>
-      <div class="a slam" style="--d: 900ms">Argue it.</div>
-      <div class="a slam" style="--d: 1500ms">Keep it.</div>
-    </div>
-    <div class="word display a pop" style="--d: 2300ms">speek<i></i></div>
-    <p class="thanks a fade" style="--d: 2700ms">Thank you. Ask us anything; Quibbit will take the other side.</p>
+    <div class="close a fade" style="--d: 900ms"><span class="display">Read it. Argue it. Keep it.</span><p>Thank you.</p></div>
   </section>
 
   <div id="guide"></div>
@@ -765,21 +658,15 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 
   // ── Where Quibbit stands on each slide (stage px), and what it says ──
   const GUIDE = {
-    's-title':   { x: 860, y: 610, s: 210, mood: 'wave', say: 'Hi, I’m Quibbit!', at: 'top', delay: 1500 },
-    's-silence': null,
+    's-title':   { x: 870, y: 610, s: 200, mood: 'wave', say: 'Hi, I’m Quibbit!', at: 'top', delay: 900 },
     's-problem': { x: 1380, y: 60, s: 140, mood: 'oops', say: 'Ouch.', at: 'left' },
-    's-insight': { x: 1330, y: 590, s: 210, mood: 'think' },
-    's-meet':    { x: 110, y: 200, s: 540, mood: 'wave', say: 'I argue the other side.', at: 'top' },
+    's-insight': { x: 1370, y: 80, s: 160, mood: 'think' },
     's-how':     { x: 1420, y: 40, s: 120, mood: 'idle' },
     's-demo':    null,
-    's-why':     { x: 1410, y: 700, s: 140, mood: 'think', say: 'So I make you say it.', at: 'left' },
-    's-comp':    { x: 1390, y: 36, s: 130, mood: 'cheer', say: 'Just us up here.', at: 'left', delay: 2600 },
-    's-traction':{ x: 1400, y: 60, s: 120, mood: 'listen' },
-    's-proof':   { x: 1410, y: 60, s: 120, mood: 'cheer' },
-    's-size':    { x: 326, y: 554, s: 120, mood: 'idle', say: 'My lily pad.', at: 'right', delay: 3400 },
-    's-model':   { x: 730, y: 150, s: 140, mood: 'cheer' },
-    's-team':    { x: 735, y: 690, s: 130, mood: 'wave' },
-    's-close':   { x: 1180, y: 380, s: 300, mood: 'cheer', say: 'Ready when you are.', at: 'top' },
+    's-comp':    { x: 1390, y: 36, s: 130, mood: 'cheer', say: 'Just us up here.', at: 'left', delay: 1300 },
+    's-market':  { x: 1420, y: 30, s: 110, mood: 'cheer' },
+    's-model':   { x: 1420, y: 40, s: 120, mood: 'idle' },
+    's-team':    { x: 740, y: 640, s: 120, mood: 'wave', say: 'Questions?', at: 'top' },
   };
 
   const guide = $('#guide');
@@ -802,9 +689,9 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     const go = () => {
       setMood(gsvg, cfg.mood === 'cheer' || cfg.mood === 'wave' ? 'idle' : cfg.mood);
       const mid = { x: (from.x + to.x) / 2, y: Math.min(from.y, to.y) - 200, s: (from.s + to.s) / 2 };
-      const dur = reduce ? 1 : 640;
+      const dur = reduce ? 1 : 520;
       guide.animate([{ transform: gT(from) }, { transform: gT(mid), offset: .5, easing: 'ease-in' }, { transform: gT(to) }], { duration: dur, fill: 'forwards', easing: 'ease-out' });
-      if (!reduce) gsvg.animate([{ transform: 'scale(1.12,.84)' }, { transform: 'scale(.9,1.12)', offset: .2 }, { transform: 'scale(1,1)', offset: .75 }, { transform: 'scale(1.16,.8)', offset: .88 }, { transform: 'none' }], { duration: 820 });
+      if (!reduce) gsvg.animate([{ transform: 'scale(1.12,.84)' }, { transform: 'scale(.9,1.12)', offset: .2 }, { transform: 'scale(1,1)', offset: .75 }, { transform: 'scale(1.16,.8)', offset: .88 }, { transform: 'none' }], { duration: 680 });
       later(dur, () => {
         setMood(gsvg, cfg.mood);
         if (cfg.say) speak(cfg);
@@ -860,7 +747,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     if (reduce) { el.textContent = fmt(to); return; }
     const mine = epoch;
     later(delay, () => {
-      const t0 = performance.now(), D = 1400;
+      const t0 = performance.now(), D = 1000;
       const tick = (t) => {
         if (mine !== epoch) return;
         const k = Math.min(1, (t - t0) / D);
@@ -877,9 +764,9 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     const span = el.firstChild;
     if (reduce) { span.textContent = text; return; }
     let i = 0;
-    later(+(el.dataset.delay || 0) + 400, function step() {
+    later(+(el.dataset.delay || 0) + 200, function step() {
       span.textContent = text.slice(0, ++i);
-      if (i < text.length) later(text[i - 1] === '.' || text[i - 1] === '?' ? 340 : 38, step);
+      if (i < text.length) later(text[i - 1] === '.' || text[i - 1] === '?' ? 180 : 22, step);
     });
   }
 
@@ -889,52 +776,43 @@ h1, h2, h3, p, ol, ul { margin: 0; }
       $$('.stat', s).forEach((st) => {
         const dots = $$('.waffle i', st);
         dots.forEach((d) => d.classList.remove('on'));
-        const n = +st.dataset.fill, at = +st.dataset.at + 380;
-        for (let i = 0; i < n; i++) later(reduce ? 0 : at + i * 14, () => dots[i].classList.add('on'));
+        const n = +st.dataset.fill, at = +st.dataset.at + 200;
+        for (let i = 0; i < n; i++) later(reduce ? 0 : at + i * 8, () => dots[i].classList.add('on'));
       });
     },
     's-insight'(s) { typeOut($('.quote', s)); },
     's-demo'(s) { demo(s); },
     's-comp'(s) {
       s.classList.remove('reveal');
-      later(2900, () => {
+      later(1500, () => {
         s.classList.add('reveal');
         const p = $('.plot', s);
         ring(p.offsetLeft + p.offsetWidth * .74, p.offsetTop + p.offsetHeight * .14, BRAND);
       });
     },
-    's-traction'(s) {
-      $$('.gauge', s).forEach((g, i) => {
-        const fg = $('.fg', g);
-        fg.style.transition = 'none';
-        fg.style.strokeDashoffset = 503;
-        later(2500 + i * 300, () => { fg.style.transition = ''; fg.style.strokeDashoffset = 503 * (1 - g.dataset.ring / 100); });
-      });
-    },
-    's-size'(s) {
+    's-market'(s) {
       const circles = $$('.circles div', s), rows = $$('.rows > div', s);
       circles.forEach((c) => c.classList.remove('on'));
-      rows.forEach((r) => r.classList.remove('on', 'now'));
-      [600, 1800, 3000].forEach((t, i) => later(t, () => {
+      rows.forEach((r) => r.classList.remove('on'));
+      [700, 1150, 1600].forEach((t, i) => later(t, () => {
         circles[i].classList.add('on');
-        rows.forEach((r) => r.classList.remove('now'));
-        rows[i].classList.add('on', 'now');
+        rows[i].classList.add('on');
         countUp($('b', rows[i]));
-        if (i === 2) ring(96 + 290, 230 + 490, BRAND, 300); // the middle of the SOM circle
+        if (i === 2) ring(110 + 215, 390 + 430 - 68, BRAND, 200); // the middle of the SOM circle
       }));
     },
   };
 
   // ── The live demo inside the phone ──────────────────────────────────
-  const QUIB1 = 'Singapore is testing a four-day week with 2,000 officers. Should every company follow? Pick your side.';
-  const QUIB2 = 'The UK trial was 61 firms that chose to join. Hospitals can’t just close on Fridays.';
+  const QUIB1 = '61 UK companies tried a four-day week, and 56 kept it. Should every company follow? Pick your side.';
+  const QUIB2 = 'Those 61 firms chose to join the trial. Hospitals can’t just close on Fridays.';
   const MINE = 'Obviously people are more productive when they rest. The UK trial showed revenue held steady.';
   const words = (t) => t.split(' ').map((w) => `<span>${w} </span>`).join('');
   const demoHTML = `<div class="app">
     <div class="bar"><b>Leave</b><span class="rnd">Opening</span><s>End</s></div>
     <div class="feed">
       <div class="qn">Should every company move to a four-day week?</div>
-      <div class="ctx">Singapore’s public service is trying it with 2,000 officers.</div>
+      <div class="ctx">61 UK companies tried it in 2022. 56 kept it going.</div>
       <div class="tug"><div class="ends"><b>You: Yes, go four</b><span>Quibbit: Not for all</span></div><div class="rope"><div class="knot"></div></div></div>
       <div class="turn t1"><div class="who">Quibbit</div><div class="said">${words(QUIB1)}</div></div>
       <div class="sides"><div class="side l"><b>Yes, go four</b><span>Shorter weeks keep output and cut burnout.</span></div><div class="side r" style="text-align:right"><b>Not for all</b><span>Many jobs need cover five or more days.</span></div></div>
@@ -942,7 +820,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
       <div class="turn t2"><div class="who" style="color:#2433D6">You</div><div class="mine"></div>
         <div class="note"><b>No evidence.</b> Said as fact, with no source behind it.</div>
         <div class="checks">Evidence <b>6</b>/10 &nbsp; Reasoning <b>5</b>/10</div></div>
-      <div class="turn t3"><div class="who">Quibbit</div><div class="said">${words(QUIB2)}<sup>1</sup></div><div class="cite"><b>1 CNA.</b> 61 firms opted in to the UK trial.</div></div>
+      <div class="turn t3"><div class="who">Quibbit</div><div class="said">${words(QUIB2)}<sup>1</sup></div><div class="cite"><b>1 Trial report.</b> All 61 firms volunteered to take part.</div></div>
     </div>
     <div class="dock"><div class="mini">${frog('think')}</div><div><div class="t"><i class="live"></i><span class="dt">Quibbit</span></div><div class="s ds">Finding the question</div><div class="eq">${'<i></i>'.repeat(26)}</div></div></div>
     <div class="report">
@@ -954,7 +832,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
         <div class="meter" style="--v:88%"><div>Clarity<b>88</b></div><u></u></div>
       </div>
       <div class="card"><div class="verdict">The best case for Not for all</div><p style="margin:6px 0 0;font-size:15px;line-height:1.45;color:#5A5F78">Shift jobs need cover every day. For hospitals, a four-day week means more hires, not more rest.</p></div>
-      <div class="card"><div class="verdict">A fact you could have quoted</div><p style="margin:6px 0 0;font-size:15px;line-height:1.45;color:#5A5F78">2,000 officers are in Singapore’s trial, not just volunteers. <b style="color:#2433D6">CNA</b></p></div>
+      <div class="card"><div class="verdict">A fact you could have quoted</div><p style="margin:6px 0 0;font-size:15px;line-height:1.45;color:#5A5F78">18 of the firms made the four-day week permanent. <b style="color:#2433D6">Trial report</b></p></div>
     </div>
   </div>`;
 
@@ -974,14 +852,15 @@ h1, h2, h3, p, ol, ul { margin: 0; }
         q('.eq').classList.toggle('on', live);
       };
       $$('.eq i', A).forEach((b, i) => { b.style.animationDuration = 0.35 + ((i * 7) % 5) * 0.09 + 's'; b.style.animationDelay = -((i * 3) % 7) * 0.1 + 's'; });
-      const light = (el, from) => $$('span', el).forEach((w, i) => later(from + i * 165, () => w.classList.add('lit')));
+      const light = (el, from) => $$('span', el).forEach((w, i) => later(from + i * 105, () => w.classList.add('lit')));
       mark(-1);
 
-      later(900, () => { mark(0); dock('talk', 'Quibbit', 'Making the case for the other side'); q('.t1').classList.add('on'); light(q('.t1 .said'), 200); });
-      later(4600, () => { mark(1); dock('idle', 'Your call', 'Drag yourself to a side'); q('.sides').classList.add('on'); q('.track').classList.add('on'); });
-      later(5400, () => { q('.puck').style.left = '14%'; });
-      later(6000, () => { q('.side.l').classList.add('pick'); });
-      later(6700, () => {
+      // About 15 seconds end to end, so nobody waits on it.
+      later(400, () => { mark(0); dock('talk', 'Quibbit', 'Making the case for the other side'); q('.t1').classList.add('on'); light(q('.t1 .said'), 100); });
+      later(2700, () => { mark(1); dock('idle', 'Your call', 'Drag yourself to a side'); q('.sides').classList.add('on'); q('.track').classList.add('on'); });
+      later(3200, () => { q('.puck').style.left = '14%'; });
+      later(3700, () => { q('.side.l').classList.add('pick'); });
+      later(4100, () => {
         mark(2);
         q('.sides').classList.remove('on'); q('.track').classList.remove('on');
         q('.tug').classList.add('on'); q('.rnd').textContent = 'Round 1 of 4';
@@ -990,27 +869,27 @@ h1, h2, h3, p, ol, ul { margin: 0; }
         q('.feed').style.transform = 'translateY(-150px)';
         const out = q('.mine');
         let i = 0;
-        later(400, function type() {
+        later(200, function type() {
           i++;
           const flawEnd = 36; // "Obviously people are more productive"
           const a = MINE.slice(0, Math.min(i, flawEnd)), b = i > flawEnd ? MINE.slice(flawEnd, i) : '';
           out.innerHTML = `<span class="flaw">${a}</span>${b}`;
-          if (i < MINE.length) later(32, type);
+          if (i < MINE.length) later(18, type);
         });
       });
-      later(10600, () => { mark(3); dock('think', 'Quibbit', 'Checking your point'); q('.flaw').classList.add('on'); });
-      later(11300, () => { q('.note').classList.add('on'); q('.checks').classList.add('on'); q('.knot').style.left = 'calc(38% - 10px)'; });
-      later(13400, () => {
+      later(6300, () => { mark(3); dock('think', 'Quibbit', 'Checking your point'); q('.flaw').classList.add('on'); });
+      later(6800, () => { q('.note').classList.add('on'); q('.checks').classList.add('on'); q('.knot').style.left = 'calc(38% - 10px)'; });
+      later(8100, () => {
         mark(4); dock('talk', 'Quibbit', 'Countering with facts');
         q('.t3').classList.add('on'); q('.feed').style.transform = 'translateY(-370px)';
-        light(q('.t3 .said'), 300);
+        light(q('.t3 .said'), 200);
       });
-      later(16700, () => q('.cite').classList.add('on'));
-      later(18200, () => {
+      later(10000, () => q('.cite').classList.add('on'));
+      later(10800, () => {
         mark(5); q('.report').classList.add('on');
-        const sc = q('.score'); sc.dataset.count = 78; countUp(sc, 400);
+        const sc = q('.score'); sc.dataset.count = 78; countUp(sc, 300);
       });
-      later(25500, run);
+      later(16500, run);
     };
     run();
   }
@@ -1029,25 +908,26 @@ h1, h2, h3, p, ol, ul { margin: 0; }
   const bookmark = (on) => `<svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 3h10a1 1 0 0 1 1 1v17l-6-4-6 4V4a1 1 0 0 1 1-1z" fill="${on ? BRAND : 'none'}" stroke="${on ? BRAND : '#9A9EB3'}" stroke-width="2" stroke-linejoin="round"/></svg>`;
   const meter = (name, v, i) => `<div class="meter" style="--v:${v}%; --i:${i}"><div>${name}<b>${v}</b></div><u></u></div>`;
   const SCREENS = {
-    welcome: () => `<div class="app">
-      <div class="wm">speek<i></i></div>
-      <div class="hello"><div class="f">${frog('wave')}</div><div class="bub">Hi, I’m Quibbit! You read the news and pick a side. I argue the other one, out loud.</div></div>
-      <div class="h">Read the news. Take a side. Defend it out loud.</div>
-      <div class="seg"><b>Create account</b><span>Sign in</span></div>
-      <div class="field">Your first name</div><div class="field">Email</div><div class="field">Password, 8 characters or more</div>
-      <div class="btn">Create account</div>
+    feed: () => `<div class="app">
+      <div class="fhead"><div><div class="wm2">speek<i></i></div><div class="date">Sunday 1 November</div></div><div class="me"><span>Level 2<br><small>3 day streak</small></span><b>A</b></div></div>
+      <div class="tabs"><b>For you</b><span>Formula 1</span><span>Space</span><span>Climate</span></div>
+      <div class="hello"><div class="f">${frog('wave')}</div><div class="bub">Read a story, then tap Deliberate and I’ll argue the other side.</div></div>
+      <div class="card2"><div class="topic">Work</div><div class="hl">Most UK firms in the four-day week trial are keeping it</div><div class="brief">One-minute brief ready</div></div>
+      <div class="card2"><div class="topic">Formula 1</div><div class="hl">How the budget cap reshaped F1’s midfield</div><div class="brief">One-minute brief ready</div></div>
+      <div class="card2"><div class="topic">Space</div><div class="hl">What the James Webb telescope has found so far</div><div class="brief">One-minute brief ready</div></div>
+      <div class="otd"><b>1969</b> on this day<div>Apollo 11 lands on the Moon</div></div>
     </div>`,
     story: () => `<div class="app">
       <div class="close">Close</div>
       <div class="story">
-        <div class="title">Singapore to trial four-day work week in public service</div>
-        <div class="meta">Singapore, CNA, 1 min read</div>
-        <p class="para first">Singapore’s public service will try a four-day week for 2,000 officers for six months.</p>
-        <p class="para">Output, sick days and how residents rate services will all be tracked.</p>
+        <div class="title">Most UK firms in the four-day week trial are keeping it</div>
+        <div class="meta">Work, one-minute brief</div>
+        <p class="para first">61 UK companies tried a four-day week for six months in 2022. 56 are carrying on, and 18 have made it permanent.</p>
+        <p class="para">Revenue stayed broadly the same, and staff reported less burnout.</p>
         <div class="h2s">Facts you can use</div>
-        <div class="fact on"><i>1</i><span>2,000 officers take part</span>${bookmark(true)}</div>
-        <div class="fact"><i>2</i><span>The trial runs six months</span>${bookmark(false)}</div>
-        <div class="fact"><i>3</i><span>Sick days and resident ratings are measured</span>${bookmark(false)}</div>
+        <div class="fact on"><i>1</i><span>56 of 61 firms kept the four-day week</span>${bookmark(true)}</div>
+        <div class="fact"><i>2</i><span>Revenue rose 1.4% on average</span>${bookmark(false)}</div>
+        <div class="fact"><i>3</i><span>About 2,900 employees took part</span>${bookmark(false)}</div>
       </div>
       <div class="sdock"><div class="fill"></div><div class="f">${frog('cheer')}</div><div class="txt"><b>Counted as read</b><span>1 fact clipped</span></div><div class="btn sm">Deliberate</div></div>
     </div>`,
@@ -1055,8 +935,8 @@ h1, h2, h3, p, ol, ul { margin: 0; }
       <div class="bar"><b>Leave</b><span>Opening</span><s>End</s></div>
       <div class="feed">
         <div class="qn">Should every company move to a four-day week?</div>
-        <div class="ctx">Singapore’s public service is trying it with 2,000 officers.</div>
-        <div class="turn on"><div class="who">Quibbit</div><div class="said">Singapore is testing a four-day week with 2,000 officers. Should every company follow? Pick your side.</div></div>
+        <div class="ctx">61 UK companies tried it in 2022. 56 kept it going.</div>
+        <div class="turn on"><div class="who">Quibbit</div><div class="said">61 UK companies tried a four-day week, and 56 kept it. Should every company follow? Pick your side.</div></div>
         <div class="sides on"><div class="side"><b>Yes, go four</b><span>Shorter weeks keep output and cut burnout.</span></div><div class="side" style="text-align:right"><b>Not for all</b><span>Many jobs need cover five or more days.</span></div></div>
         <div class="track on"><div class="puck">You</div></div>
         <p class="hint">Drag yourself to a side, or tap one.</p>
@@ -1064,11 +944,11 @@ h1, h2, h3, p, ol, ul { margin: 0; }
       <div class="dock"><div class="mini">${frog('idle')}</div><div><div class="t">Your call</div><div class="s">Pick the side you’ll argue</div></div></div>
     </div>`,
     report: () => `<div class="app">
-      <div class="bar"><span>CNA</span><span></span><b>Close</b></div>
+      <div class="bar"><span>Your report</span><span></span><b>Close</b></div>
       <div class="rep">
         <div class="rq">Should every company move to a four-day week?</div>
         <div class="rs">You argued <b>Yes, go four</b>. Quibbit argued Not for all.</div>
-        <div class="card"><div class="row"><div><div class="score" data-count="68" data-delay="2700">68</div><div class="verdict">Solid, with a few holes.</div></div><div style="width:100px;height:100px">${frog('cheer')}</div></div>
+        <div class="card"><div class="row"><div><div class="score" data-count="68" data-delay="1500">68</div><div class="verdict">Solid, with a few holes.</div></div><div style="width:100px;height:100px">${frog('cheer')}</div></div>
           ${meter('Evidence', 72, 0)}${meter('Reasoning', 61, 1)}${meter('Rebuttal', 58, 2)}${meter('Clarity', 80, 3)}${meter('Fairness', 66, 4)}
         </div>
       </div>
@@ -1107,7 +987,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     s.classList.remove('active');
     void s.offsetWidth; // restart every entrance
     s.classList.add('active');
-    $$('[data-count]:not([data-manual])', s).forEach((el) => { if (!el.closest('#demo-screen')) countUp(el, +(el.dataset.delay || 0) + 380); });
+    $$('[data-count]:not([data-manual])', s).forEach((el) => { if (!el.closest('#demo-screen')) countUp(el, +(el.dataset.delay || 0) + 200); });
     ENTER[s.id] && ENTER[s.id](s);
   }
 
@@ -1136,11 +1016,11 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     if (instant || !prev || reduce) { if (prev) prev.classList.remove('active'); return; }
     // The next slide splashes open from where Quibbit lands (or the middle, if he's sitting this one out).
     const o = land && !cfg.delay ? land : { x: 800, y: 450 };
-    const wait = land && !cfg.delay ? 420 : 0;
+    const wait = land && !cfg.delay ? 300 : 0;
     prev.style.zIndex = 1;
     next.style.zIndex = 2;
-    const reveal = next.animate([{ clipPath: `circle(0px at ${o.x}px ${o.y}px)` }, { clipPath: `circle(1900px at ${o.x}px ${o.y}px)` }], { duration: 900, delay: wait, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
-    const sink = prev.animate([{ transform: 'none', filter: 'none' }, { transform: `scale(.9) translateX(${back ? 60 : -60}px)`, filter: 'blur(8px)' }], { duration: 900, delay: wait, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+    const reveal = next.animate([{ clipPath: `circle(0px at ${o.x}px ${o.y}px)` }, { clipPath: `circle(1900px at ${o.x}px ${o.y}px)` }], { duration: 720, delay: wait, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
+    const sink = prev.animate([{ transform: 'none', filter: 'none' }, { transform: `scale(.9) translateX(${back ? 60 : -60}px)`, filter: 'blur(8px)' }], { duration: 720, delay: wait, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
     ring(o.x, o.y, onColour ? '#fff' : BRAND, wait);
     running = [reveal, sink];
     reveal.onfinish = () => { prev.classList.remove('active'); sink.cancel(); prev.style.zIndex = ''; running = []; };
