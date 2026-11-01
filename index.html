@@ -115,7 +115,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 .m-sleep .zz text + text { animation-delay: 1.3s; }
 
 /* The narrator: one Quibbit who hops between slides. Each landing splashes the next slide open. */
-#guide { position: absolute; left: 0; top: 0; width: 200px; height: 200px; transform-origin: 0 0; transform: translate(700px, 1000px); z-index: 20; pointer-events: none; }
+#guide { position: absolute; left: 0; top: 0; width: 200px; height: 200px; transform-origin: 0 0; transform: translate(700px, 1000px) scale(.005); z-index: 20; pointer-events: none; }
 #guide .frog { position: relative; transform-origin: 50% 88%; } /* positioned, so it paints above the lily pad */
 #guide::before { content: ''; position: absolute; left: 4%; right: 4%; top: 14%; bottom: -2%; border-radius: 50%; background: #fff; transform: scale(0); transition: transform .4s var(--spring); }
 #guide.pad::before { transform: scale(1); }
@@ -125,7 +125,8 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 #say.top::after { left: calc(50% - 9px); bottom: -11px; transform: rotate(45deg); }
 #say.left::after { right: -11px; top: calc(50% - 9px); transform: rotate(-45deg); }
 #say.right::after { left: -11px; top: calc(50% - 9px); transform: rotate(135deg); }
-.ring { position: absolute; z-index: 15; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 4px solid var(--brand); pointer-events: none; }
+#splash { position: absolute; inset: 0; z-index: 15; background: var(--brand); clip-path: circle(0px at 50% 50%); pointer-events: none; }
+.ring { position: absolute; z-index: 16; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 4px solid var(--brand); pointer-events: none; }
 
 /* ── Phones ─────────────────────────────────────────────── */
 .phone { --w: 300px; position: absolute; width: var(--w); height: calc(var(--w) * 844 / 390 + var(--w) * .07); border-radius: calc(var(--w) * .15); background: var(--ink); padding: calc(var(--w) * .035); box-shadow: 0 40px 90px rgba(20, 22, 42, .28), inset 0 0 0 2px #2a2d48; }
@@ -201,9 +202,9 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 #s-model .card li { display: grid; grid-template-columns: 30px 1fr; gap: 10px; }
 #s-model .card li svg { width: 26px; height: 26px; margin-top: 1px; }
 #s-model .card .tag { margin-top: 18px; padding-top: 16px; border-top: 1.5px solid var(--line); font-family: 'Fredoka'; font-weight: 600; font-size: 22px; }
-#s-model .goals { margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-#s-model .goals b { display: block; font-family: 'Fredoka'; font-weight: 700; font-size: 40px; color: var(--brand); font-variant-numeric: tabular-nums; }
-#s-model .goals span { font-size: 15px; line-height: 1.3; color: var(--soft); }
+#s-model .proves { margin-top: 12px; display: grid; gap: 10px; font-size: 19px; line-height: 1.35; color: var(--soft); list-style: none; padding: 0; }
+#s-model .proves li { display: block; padding-left: 22px; position: relative; }
+#s-model .proves li::before { content: ''; position: absolute; left: 2px; top: .5em; width: 9px; height: 9px; border-radius: 50%; background: var(--brand); }
 #s-model .anchor { position: absolute; left: 96px; bottom: 44px; font-size: 19px; color: var(--soft); }
 
 /* ── 6 · How it works ───────────────────────────────────── */
@@ -400,6 +401,8 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 #hint { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 50; padding: 10px 18px; border-radius: 14px; background: #fff; border: 2px solid var(--line); color: var(--ink); font-size: 14px; transition: opacity .6s; }
 #hint.gone { opacity: 0; pointer-events: none; }
 
+.no-trans, .no-trans * { transition: none !important; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .a, [data-split] .ch, [data-words] .wd { opacity: 1 !important; }
@@ -415,7 +418,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     <div class="pond a pop" style="--d: 500ms"></div>
     <h1 class="mark display" data-split>speek<span class="stop a pop" style="--d: 450ms"></span></h1>
     <h2 class="tag display" data-words style="--d: 500ms; --step: 150ms">Read it. Argue it. Keep it.</h2>
-    <p class="lede a fade" style="--d: 1100ms">News built around what you’re into, summarised in a minute. Then Quibbit takes the other side, and you argue it out loud.</p>
+    <p class="lede a fade" style="--d: 1100ms">For anyone who wants opinions worth saying out loud. Speek builds your news around what you’re into and sums up every story in a minute. Then Quibbit takes the other side, and you argue it out.</p>
     <p class="by a fade" style="--d: 1300ms">Ayushman Chaudhuri and Katherine Chen</p>
     <div class="tilt"><div class="a lift" style="--d: 300ms; --r0: 10deg; --r1: 0deg"><div class="phone"><div class="screen" data-screen="feed" role="img" aria-label="A Speek feed tailored to Formula 1, space and climate"></div></div></div></div>
   </section>
@@ -452,12 +455,12 @@ h1, h2, h3, p, ol, ul { margin: 0; }
   <section class="slide cobalt" id="s-insight" aria-label="The insight">
     <div class="mark a pop" aria-hidden="true">“</div>
     <p class="quote" data-type="I read something about this last week. How does it connect to what you just said?" data-delay="100"></p>
-    <p class="note a wipe" style="--d: 2300ms">At networking events and in class, that question is where the real conversation starts. The person asking isn’t the best speaker in the room. They just read something, and said it.</p>
+    <p class="note a wipe" style="--d: 2300ms">At dinner, in meetings, on dates, at networking drinks: that question is where the real conversation starts. The person asking isn’t the smartest in the room. They just read something, and said it.</p>
     <p class="punch display a slam" style="--d: 2900ms">Good conversation isn’t a talent. It’s reading, then practising out loud.</p>
     <div class="proof">
       <div class="a pop" style="--d: 3300ms"><b>61% vs 40%</b><span>remembered an article a week later when people recalled it, versus re-read it.</span></div>
       <div class="a pop" style="--d: 3500ms"><b>957 debates</b><span>arguing by voice with an AI opponent drew out a wider range of ideas than typing.</span></div>
-      <div class="a pop" style="--d: 3700ms"><b>759 students</b><span>practising with a voice AI before class raised their participation in the real discussion.</span></div>
+      <div class="a pop" style="--d: 3700ms"><b>759 MBA students</b><span>practising with a voice AI beforehand made them speak up more in the real discussion.</span></div>
     </div>
     <p class="src">Sources: Roediger &amp; Karpicke, Psychological Science (2006); Jain &amp; Wang, arXiv (2026); Columbia Business School MBA field experiment (2025).</p>
   </section>
@@ -471,7 +474,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     </svg>
     <div class="step" style="left: 100px">
       <h3 class="a pop" style="--d: 150ms"><i>1</i>Read it</h3>
-      <p class="a fade" style="--d: 250ms">A feed built from anything you’re into. Each story becomes a one-minute brief: what happened, the facts to keep, where people split.</p>
+      <p class="a fade" style="--d: 250ms">A feed built from what you’re into. Every story becomes a one-minute brief: what happened, key facts, where people split.</p>
       <div class="phone a lift" style="--d: 300ms; --r0: -6deg; --r1: 0deg"><div class="screen" data-screen="story" role="img" aria-label="A one-minute brief in Speek, with facts to clip"></div></div>
     </div>
     <div class="step" style="left: 600px">
@@ -552,10 +555,9 @@ h1, h2, h3, p, ol, ul { margin: 0; }
       <h3 class="k a fade" style="--d: 100ms">How we’ll make money</h3>
       <div class="plan a pop" style="--d: 200ms"><div><b>Free</b><div class="price">S$0</div></div><p>Every story and brief, plus one debate a day.</p></div>
       <div class="plan up a pop" style="--d: 400ms"><div><b>SpeekUp</b><div class="price">S$9.99<small> / month</small></div></div><p>Unlimited debates and your skill history. Keep Speeking to your heart’s desire.</p></div>
-      <div class="plan a pop" style="--d: 600ms"><div><b>Schools and teams</b><div class="price">Seats</div></div><p>Debate clubs, classes and onboarding, with a teacher view. Next year.</p></div>
+      <div class="plan a pop" style="--d: 600ms"><div><b>Family</b><div class="price">Later</div></div><p>One plan for the whole household, with a family-safe mode so kids can argue the news too.</p></div>
     </div>
-    <!-- EDIT: pilot targets, not results. Swap in real numbers once the pilot runs. -->
-    <div class="now">
+        <div class="now">
       <h3 class="k a fade" style="--d: 700ms">Where we are</h3>
       <div class="card a pop" style="--d: 800ms">
         <ul>
@@ -564,12 +566,12 @@ h1, h2, h3, p, ol, ul { margin: 0; }
           <li><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Spoken debates and a five-skill report</li>
           <li><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#2433D6"/><path d="M10 18l5 5 9-11" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Not released yet: no store listing, no users</li>
         </ul>
-        <div class="tag">Next: a 30-day closed pilot. Our targets:</div>
-        <div class="goals">
-          <div><b data-count="25" data-suffix="%" data-delay="1000">0%</b><span>still debating on day 7</span></div>
-          <div><b data-count="20" data-prefix="+" data-suffix="%" data-delay="1100">0%</b><span>score by the fifth debate</span></div>
-          <div><b data-count="3" data-delay="1200">0</b><span>debates a week per user</span></div>
-        </div>
+        <div class="tag">Next: a closed pilot, to prove three things</div>
+        <ul class="proves">
+          <li>People come back without being reminded</li>
+          <li>Their arguments get measurably better</li>
+          <li>They’d pay to keep going</li>
+        </ul>
       </div>
     </div>
     <p class="anchor a fade" style="--d: 1000ms">Planned pricing; nothing is charged in the MVP. For comparison, Speak charges US$20 a month.</p>
@@ -604,6 +606,7 @@ h1, h2, h3, p, ol, ul { margin: 0; }
     <div class="close a fade" style="--d: 900ms"><span class="display">Read it. Argue it. Keep it.</span><p>Thank you.</p></div>
   </section>
 
+  <div id="splash" aria-hidden="true"></div>
   <div id="guide"></div>
   <div id="say"></div>
 </div>
@@ -673,37 +676,46 @@ h1, h2, h3, p, ol, ul { margin: 0; }
   guide.innerHTML = frog('idle');
   const gsvg = guide.firstElementChild;
   const say = $('#say');
-  let gNow = { x: 700, y: 1000, s: 200, shown: false };
   const gT = (p) => `translate(${p.x}px, ${p.y}px) scale(${p.s / 200})`;
 
-  function moveGuide(cfg, onLand) {
+  // Where Quibbit really is right now, even mid-hop, so an interrupted hop never teleports.
+  function settleGuide() {
+    const m = new DOMMatrixReadOnly(getComputedStyle(guide).transform);
+    const now = { x: m.e, y: m.f, s: m.a * 200 };
+    guide.getAnimations().forEach((a) => a.cancel());
+    guide.style.transform = gT(now);
+    return now;
+  }
+
+  function moveGuide(cfg, onColour) {
     say.classList.remove('on');
-    if (!cfg) {
-      if (gNow.shown) guide.animate([{ transform: gT(gNow) }, { transform: gT({ ...gNow, x: gNow.x + gNow.s / 2, y: gNow.y + gNow.s * .8, s: 0.01 }) }], { duration: 300, fill: 'forwards', easing: 'ease-in' });
-      gNow = { ...gNow, shown: false };
-      return null;
-    }
-    const to = { x: cfg.x, y: cfg.y, s: cfg.s, shown: true };
-    // A delayed entrance pops up where Quibbit will stand; otherwise he hops over from the last slide.
-    const from = cfg.delay ? { x: to.x + to.s * .35, y: to.y + to.s * .7, s: to.s * .3 } : gNow.shown ? gNow : { x: cfg.x, y: 960, s: cfg.s * .6 };
-    const go = () => {
+    const now = settleGuide();
+    const visible = now.s > 20;
+    const hide = () => {
+      if (visible) guide.animate([{ transform: gT(now) }, { transform: gT({ x: now.x + now.s / 2, y: now.y + now.s * .8, s: 1 }) }], { duration: reduce ? 1 : 220, fill: 'forwards', easing: 'ease-in' });
+    };
+    if (!onColour || !cfg) guide.classList.remove('pad');
+    if (!cfg) { hide(); return null; }
+    const to = { x: cfg.x, y: cfg.y, s: cfg.s };
+    // Pops up where he'll stand when he wasn't on screen; otherwise hops over from where he is.
+    const popFrom = { x: to.x + to.s * .35, y: to.y + to.s * .7, s: to.s * .3 };
+    const go = (from) => {
       setMood(gsvg, cfg.mood === 'cheer' || cfg.mood === 'wave' ? 'idle' : cfg.mood);
       const mid = { x: (from.x + to.x) / 2, y: Math.min(from.y, to.y) - 200, s: (from.s + to.s) / 2 };
       const dur = reduce ? 1 : 520;
       guide.animate([{ transform: gT(from) }, { transform: gT(mid), offset: .5, easing: 'ease-in' }, { transform: gT(to) }], { duration: dur, fill: 'forwards', easing: 'ease-out' });
       if (!reduce) gsvg.animate([{ transform: 'scale(1.12,.84)' }, { transform: 'scale(.9,1.12)', offset: .2 }, { transform: 'scale(1,1)', offset: .75 }, { transform: 'scale(1.16,.8)', offset: .88 }, { transform: 'none' }], { duration: 680 });
       later(dur, () => {
+        guide.classList.toggle('pad', onColour); // a white lily pad, so the cobalt frog shows on cobalt
         setMood(gsvg, cfg.mood);
         if (cfg.say) speak(cfg);
-        onLand && onLand(to);
       });
     };
-    gNow = to;
     if (cfg.delay) {
-      // Hide first, then make an entrance once the slide has set the scene.
-      guide.animate([{ transform: gT({ ...to, x: to.x + to.s / 2, y: to.y + to.s, s: 0.01 }) }], { duration: 1, fill: 'forwards' });
-      later(cfg.delay, go);
-    } else go();
+      // Duck out, then make an entrance once the slide has set the scene.
+      hide();
+      later(cfg.delay, () => go(popFrom));
+    } else go(visible ? now : popFrom);
     return { x: to.x + to.s / 2, y: to.y + to.s * .62 };
   }
 
@@ -980,50 +992,66 @@ h1, h2, h3, p, ol, ul { margin: 0; }
 
   // ── Navigation ──────────────────────────────────────────────────────
   let cur = -1;
-  let running = [];
   const bgOf = (s) => (s.classList.contains('cobalt') ? '#2433D6' : s.classList.contains('dark') ? '#14162A' : '#F4F5FA');
 
   function activate(s) {
+    // Reset with transitions off, so coming back to a slide never plays it in reverse.
+    s.classList.add('no-trans');
     s.classList.remove('active');
     void s.offsetWidth; // restart every entrance
     s.classList.add('active');
     $$('[data-count]:not([data-manual])', s).forEach((el) => { if (!el.closest('#demo-screen')) countUp(el, +(el.dataset.delay || 0) + 200); });
     ENTER[s.id] && ENTER[s.id](s);
+    void s.offsetWidth;
+    requestAnimationFrame(() => s.classList.remove('no-trans'));
   }
+
+  // Changing slides: a cobalt splash bursts from where Quibbit lands, the slides swap
+  // underneath it, then it fades. The two slides are never on screen together.
+  const splash = $('#splash');
+  let pending = null;
 
   function go(n, instant = false) {
     n = Math.max(0, Math.min(slides.length - 1, n));
     if (n === cur) return;
-    running.forEach((a) => a.finish());
-    running = [];
+    if (pending) pending(); // finish any half-done change at once
+    splash.getAnimations().forEach((a) => a.cancel());
     clearTimers();
     const prev = slides[cur], next = slides[n];
-    const back = n < cur;
     cur = n;
     history.replaceState(null, '', '#' + (n + 1));
     $('#progress').style.width = ((n + 1) / slides.length) * 100 + '%';
     $('#progress').style.backgroundColor = next.classList.contains('cobalt') ? '#fff' : '#2433D6';
     $('#count').textContent = `${n + 1} / ${slides.length}`;
-    viewport.style.backgroundColor = bgOf(next);
 
     const cfg = GUIDE[next.id];
     const onColour = next.classList.contains('cobalt') || next.classList.contains('dark');
-    guide.classList.toggle('pad', !!cfg && onColour); // a white lily pad, so the cobalt frog shows on cobalt
-    slides.forEach((s) => { if (s !== prev && s !== next) s.classList.remove('active'); s.style.zIndex = ''; });
-    activate(next);
-    const land = moveGuide(cfg);
+    const land = moveGuide(cfg, onColour);
+    const show = () => {
+      slides.forEach((sl) => { if (sl !== next) sl.classList.remove('active'); });
+      viewport.style.backgroundColor = bgOf(next);
+      activate(next);
+    };
+    if (instant || !prev || reduce) { show(); return; }
 
-    if (instant || !prev || reduce) { if (prev) prev.classList.remove('active'); return; }
-    // The next slide splashes open from where Quibbit lands (or the middle, if he's sitting this one out).
     const o = land && !cfg.delay ? land : { x: 800, y: 450 };
-    const wait = land && !cfg.delay ? 300 : 0;
-    prev.style.zIndex = 1;
-    next.style.zIndex = 2;
-    const reveal = next.animate([{ clipPath: `circle(0px at ${o.x}px ${o.y}px)` }, { clipPath: `circle(1900px at ${o.x}px ${o.y}px)` }], { duration: 720, delay: wait, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
-    const sink = prev.animate([{ transform: 'none', filter: 'none' }, { transform: `scale(.9) translateX(${back ? 60 : -60}px)`, filter: 'blur(8px)' }], { duration: 720, delay: wait, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
-    ring(o.x, o.y, onColour ? '#fff' : BRAND, wait);
-    running = [reveal, sink];
-    reveal.onfinish = () => { prev.classList.remove('active'); sink.cancel(); prev.style.zIndex = ''; running = []; };
+    const cover = splash.animate(
+      [{ clipPath: `circle(0px at ${o.x}px ${o.y}px)`, opacity: 1 }, { clipPath: `circle(1900px at ${o.x}px ${o.y}px)`, opacity: 1 }],
+      { duration: 420, delay: land && !cfg.delay ? 140 : 0, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'both' },
+    );
+    let swapped = false;
+    const swap = () => {
+      if (swapped) return;
+      swapped = true;
+      pending = null;
+      show();
+      cover.cancel();
+      const fade = splash.animate([{ clipPath: 'none', opacity: 1 }, { clipPath: 'none', opacity: 0 }], { duration: 380, easing: 'ease-out' });
+      ring(o.x, o.y, onColour ? '#fff' : BRAND);
+      fade.onfinish = () => fade.cancel();
+    };
+    cover.onfinish = swap;
+    pending = swap;
   }
 
   const next = () => go(cur + 1), prev = () => go(cur - 1);
